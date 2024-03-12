@@ -5,7 +5,6 @@ import initialState from '../store/initialState';
 
 
 const calendarReducer = (state = initialState, action) => {
-  console.log(state, action);
 
   function moveElement(array, fromIndex, toIndex) {
     const elementToMove = array.splice(fromIndex, 1)[0];

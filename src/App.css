@@ -107,7 +107,9 @@ form {
 .create-task-form {
   margin-bottom: 10px;
 }
-
+.calendar {
+  max-width: 1000px;
+}
 .calendar-cell,
 .tasks {
   height: 80%;
