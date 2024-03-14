@@ -124,7 +124,7 @@ const Calendar = () => {
   // Обработчик клика на день
   const addDayTask = (day) => {
     setTaskIdToEdit(null);
-    setFormSubmitted(false)
+    setFormSubmitted(false);
     setSelectedDay(day);
   };
 

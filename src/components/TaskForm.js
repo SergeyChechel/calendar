@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask, editTask } from '../actions/taskActions';
 
-const TaskForm = ({ selectedDate, taskIdToEdit, setIsShowing, setIsEditing }) => {
+const TaskForm = ({ selectedDate, taskIdToEdit, hideForm, setIsEditing }) => {
     const [taskName, setTaskName] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     
@@ -33,10 +33,12 @@ const TaskForm = ({ selectedDate, taskIdToEdit, setIsShowing, setIsEditing }) =>
         } else {
             const idOfTask = selectedDate + '-' + Date.now();
             dispatch(addTask(selectedDate, taskName, taskDescription, idOfTask));
+            hideForm(true);
         }
         // Очистка формы после отправки
         setTaskName('');
         setTaskDescription('');
+        
     };
 
 
