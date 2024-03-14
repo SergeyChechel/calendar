@@ -10,8 +10,12 @@ import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 import initialState from './store/initialState';
 
-const store = createStore(rootReducer, initialState)
 
+
+const store = createStore(
+  rootReducer, 
+  JSON.parse(localStorage.getItem('stateFromStorage')) ?? initialState
+)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

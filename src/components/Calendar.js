@@ -103,6 +103,19 @@ const Calendar = () => {
   const labels = useSelector(state => state.labels);
   const filters = useSelector(state => state.filters);
 
+  const handleBeforeUnload = (event) => {
+    try {
+      localStorage.setItem(
+        'stateFromStorage', 
+        JSON.stringify({ tasks, filters, labels })
+      );
+    } catch (error) {
+      console.error('Error saving state to localStorage:', error);
+    }
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
   if(filters.searchText) {
     tasks = filterTasks(tasks, filters.searchText, 'text');
   } 
