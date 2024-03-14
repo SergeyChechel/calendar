@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLabel, editLabel, deleteLabel } from '../actions/labelActions';
 
-const LabelForm = ({ task, labelToEdit, undoForm }) => {
+const LabelForm = ({ task, labelToEdit, undoForm, setLabelIdToEdit }) => {
     const dispatch = useDispatch();
 
     const [labelColor, setLabelColor] = useState('');
@@ -45,13 +45,13 @@ const LabelForm = ({ task, labelToEdit, undoForm }) => {
                 color: labelColor, 
                 text: labelText
             };
-
             dispatch(addLabel(task, newLabel));
         }
         // Очистка формы после отправки
         setLabelColor('');
         setLabelText('');
         setLabel(null);
+        setLabelIdToEdit(null);
         undoForm();
     };
 

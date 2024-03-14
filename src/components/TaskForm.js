@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask, editTask } from '../actions/taskActions';
 
-const TaskForm = ({ selectedDate, taskIdToEdit, hideForm }) => {
+const TaskForm = ({ selectedDate, taskIdToEdit, setIsShowing, setIsEditing }) => {
     const [taskName, setTaskName] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
-    // const [taskId, setTaskId] = useState(null);
     
     const dispatch = useDispatch();
 
@@ -15,10 +14,8 @@ const TaskForm = ({ selectedDate, taskIdToEdit, hideForm }) => {
     useEffect(() => {
         if (taskIdToEdit) {
             const day = taskIdToEdit.split('-')[0];
-            // debugger;
             const taskToEdit = tasks[day].find(task => task.id === taskIdToEdit);
             if (taskToEdit) {
-                // setTaskId(taskToEdit.id);
                 setTaskName(taskToEdit.name);
                 setTaskDescription(taskToEdit.descr);
             }
@@ -32,6 +29,7 @@ const TaskForm = ({ selectedDate, taskIdToEdit, hideForm }) => {
         
         if (taskIdToEdit) {
             dispatch(editTask(taskIdToEdit, taskName, taskDescription));
+            setIsEditing(false);
         } else {
             const idOfTask = selectedDate + '-' + Date.now();
             dispatch(addTask(selectedDate, taskName, taskDescription, idOfTask));
@@ -39,8 +37,6 @@ const TaskForm = ({ selectedDate, taskIdToEdit, hideForm }) => {
         // Очистка формы после отправки
         setTaskName('');
         setTaskDescription('');
-        // setTaskId(null);
-        hideForm();
     };
 
 

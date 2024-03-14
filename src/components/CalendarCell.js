@@ -4,7 +4,7 @@ import { moveTask, reorderTask } from '../actions/taskActions';
 import { moveLabels } from '../actions/labelActions';
 import Task from './Task';
 
-const CalendarCell = ({ date, tasks, onEditTask }) => {
+const CalendarCell = ({ date, tasks, onEditTask, taskFormData }) => {
 
   const dispatch = useDispatch();
   const dayLabels = useSelector(state => state.labels[date]) || [];
@@ -51,10 +51,10 @@ const CalendarCell = ({ date, tasks, onEditTask }) => {
         {tasks.map((task, indx) => (
           <Task key={task.id} task={task} indx={indx}
             onEdit={onEditTask} 
-            // onDelete={onDeleteTask}
             onDrag={handleDragStart} 
             handleDrop={reoderDropHandle} 
             labels={filterLabelsByTaskId(dayLabels, task.id)}
+            taskFormData={taskFormData}
           />
         ))}
       </div>

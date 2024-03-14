@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editTask, deleteTask } from '../actions/taskActions';
 import { deleteLabel } from '../actions/labelActions';
+import TaskForm from './TaskForm';
 import LabelForm from './LabelForm';
 import Label from './Label';
 
-const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels }) => {
+const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels, taskFormData }) => {
   task.labels = labels;
-  // debugger;
+  const {taskIdToEdit , selectedDay, day} = taskFormData;
+  const [isEditing, setIsEditing] = useState(true);
   const [isHidden, setIsHidden] = useState(true);
   const [labelToEdit, setLabelIdToEdit] = useState('');
   const [showLabelForm, setShowLabelForm] = useState(false);
@@ -19,6 +21,7 @@ const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels }) => {
   }
 
   const handleEditClick = () => {
+    setIsEditing(true);
     onEdit(task.id);
   };
 
@@ -34,6 +37,7 @@ const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels }) => {
       setLabelIdToEdit(findLabelById(task.labels, id));
       setShowLabelForm(true);
     } else {
+      setLabelIdToEdit(null);
       setShowLabelForm(true);
     }
   };
@@ -53,7 +57,12 @@ const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels }) => {
     <>
       {showLabelForm && <LabelForm task={task} 
         labelToEdit={labelToEdit}
-        undoForm={handleCancelLabelFormClick} />}
+        undoForm={handleCancelLabelFormClick} 
+        setLabelIdToEdit={setLabelIdToEdit}/>}
+
+      {selectedDay == day && taskIdToEdit && (taskIdToEdit == task.id) && isEditing &&
+      <TaskForm selectedDate={day} taskIdToEdit={taskIdToEdit} 
+        setIsEditing={setIsEditing}/>}
 
       <div className="task" data-indx={indx} draggable
         onClick={toggleHidden}

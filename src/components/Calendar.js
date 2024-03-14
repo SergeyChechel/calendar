@@ -123,6 +123,7 @@ const Calendar = () => {
   
   // Обработчик клика на день
   const addDayTask = (day) => {
+    setTaskIdToEdit(null);
     setFormSubmitted(false)
     setSelectedDay(day);
   };
@@ -180,10 +181,11 @@ const Calendar = () => {
             <button className="add-task" ref={myRef} onClick={() => addDayTask(day)}>
               Add task</button>
 
-            {selectedDay == day && !formSubmitted && <TaskForm selectedDate={day} taskIdToEdit={taskIdToEdit} hideForm={ hideForm }/>}
+            {selectedDay == day && !formSubmitted && !taskIdToEdit && <TaskForm selectedDate={day} hideForm={ hideForm }/>}
 
             <CalendarCell key={day} date={day} 
               tasks={tasks[day] || []}
+              taskFormData={{taskIdToEdit, selectedDay, day, hideForm}}
               onEditTask={editTaskHandle} />
           </div>
         ))}
