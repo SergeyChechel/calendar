@@ -103,7 +103,7 @@ const Calendar = () => {
   const labels = useSelector(state => state.labels);
   const filters = useSelector(state => state.filters);
 
-  const handleBeforeUnload = (event) => {
+  useEffect(() => {
     try {
       localStorage.setItem(
         'stateFromStorage', 
@@ -112,9 +112,7 @@ const Calendar = () => {
     } catch (error) {
       console.error('Error saving state to localStorage:', error);
     }
-  };
-
-  window.addEventListener('beforeunload', handleBeforeUnload);
+  }, [tasks, filters, labels]);
 
   if(filters.searchText) {
     tasks = filterTasks(tasks, filters.searchText, 'text');
