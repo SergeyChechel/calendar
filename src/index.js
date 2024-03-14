@@ -11,6 +11,8 @@ import rootReducer from './reducers';
 import initialState from './store/initialState';
 
 
+const c = JSON.parse(localStorage.getItem('stateFromStorage'));
+const d = initialState;
 
 const store = createStore(
   rootReducer, 

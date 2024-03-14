@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editTask, deleteTask } from '../actions/taskActions';
+import { deleteLabel } from '../actions/labelActions';
 import LabelForm from './LabelForm';
 import Label from './Label';
 
@@ -23,6 +24,9 @@ const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels }) => {
 
   const handleDeleteClick = () => {
     dispatch(deleteTask(task.day, task.id));
+    task.labels.forEach(label => {
+      dispatch(deleteLabel(task.day, label.id));
+    });
   };
 
   const handleLabelClick = (id) => {

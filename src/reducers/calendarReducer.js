@@ -71,7 +71,6 @@ const calendarReducer = (state = initialState, action) => {
 
     case REORDER_TASK: {
         const { dayIndex: day, sourceDay, dropTaskIndex: newIndex, draggedTaskIndex: oldIndex } = action.payload;
-            // debugger;
         if(sourceDay != day) return state; 
         return {
           ...state,
