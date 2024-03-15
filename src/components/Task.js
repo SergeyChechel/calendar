@@ -65,7 +65,7 @@ const Task = ({ task, indx, onEdit, onDrag, handleDrop, labels, taskFormData }) 
         setIsEditing={setIsEditing}/>}
 
       <div className="task" data-indx={indx} draggable
-        onClick={toggleHidden}
+        onClick={toggleHidden} title='click to edit'
         onDragStart={(event) => onDrag(event, task.day, task.id)}
         onDrop={(event) => handleDrop(event, task.day)}
       >
