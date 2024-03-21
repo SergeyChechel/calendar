@@ -8,9 +8,6 @@ const yaearDataReducer = (state = initialState, action) => {
     
     case PUT_MONTH_DATA: 
       const { month, monthData } = action.payload;
-      // const c = [...state.slice(0, month), monthData, ...state.slice(month + 1)];
-      
-      // debugger;
       return [...state.slice(0, month), monthData, ...state.slice(month + 1)];
 
     case EXTRACT_MONTH_DATA:

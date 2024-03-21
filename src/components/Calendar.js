@@ -10,7 +10,6 @@ import { putMonthData } from '../actions/yearDataActions';
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  // debugger;
   const [month, setMonth] = useState(null);
   const [year, setYear] = useState(new Date().getFullYear());
 
@@ -51,17 +50,21 @@ const Calendar = () => {
     if(event.target.classList.contains('prev-month')) {
       setMonth(currentMonth - 1);
       if (currentMonth - 1 < 0) {
-        setYear(year - 1);
+        // setYear(year - 1); // откл перехода на другие года
+        setMonth(0);
       }
     }
 
     if(event.target.classList.contains('next-month')) {
       setMonth(currentMonth + 1);
       if (currentMonth + 1 > 11) {
-        setYear(year + 1);
-        setMonth(0);
+        // setYear(year + 1); // откл перехода на другие года
+        // setMonth(0);       // откл перехода на другие года
+        setMonth(11);
       }
     }
+
+    
   };
 
   const [holidays, setHolidays] = useState([]);
@@ -145,7 +148,6 @@ const Calendar = () => {
   }
 
   useEffect(() => {
-    // debugger;
     dispatch(updateTasks(monthData?.tasks || {}));
     dispatch(updateLabels(monthData?.labels || {}));
     dispatch(updateFilters(monthData?.filters || {}));

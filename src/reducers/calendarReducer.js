@@ -15,13 +15,11 @@ const calendarReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case UPDATE_TASKS:
-      // debugger;
       return action.payload
 
     case ADD_TASK:
       const { day, name, descr, id } = action.payload;
       const task = {day, name, descr, id};
-      // debugger;
       return {
         ...state,
         [day]: [...(state[day] || []), task]

@@ -11,7 +11,7 @@ const CalendarCell = ({ date, tasks, onEditTask, taskFormData, dataFromRedux }) 
   const dispatch = useDispatch();
   const dayLabels = useSelector(state => state.labels[date]) || [];
   const dayTasks = dataFromRedux[date];
-  // debugger;
+
   function filterLabelsByTaskId(dayLabels, taskId) {
     return dayLabels.filter(item => item.taskId === taskId);
   }
@@ -66,9 +66,9 @@ const CalendarCell = ({ date, tasks, onEditTask, taskFormData, dataFromRedux }) 
 }
 
 const mapStateToProps = state => {
-  // debugger;
+
   return {
-    dataFromRedux: state.tasks // Получение доступа к данным из Redux-состояния и отображение их в свойство 'данныеИзRedux'
+    dataFromRedux: state.tasks // Получение доступа к данным из Redux-состояния и отображение их в свойство 'dataFromRedux'
   };
 };
 
