@@ -1,3 +1,9 @@
+export const updateLabels = (labels) => {
+  return {
+    type: 'UPDATE_LABELS',
+    payload: labels
+  };
+};
 
 // Экшен для добавления новой метки
 export const addLabel = (task, label) => {

@@ -3,20 +3,65 @@ import { useDispatch, useSelector } from 'react-redux';
 import CalendarCell from './CalendarCell';
 import TaskForm from './TaskForm';
 import { filterTasksByText, filterTasksByLabel } from '../actions/filterActions';
+import { updateTasks } from '../actions/taskActions';
+import { updateLabels } from '../actions/labelActions';
+import { updateFilters } from '../actions/filterActions';
+import { putMonthData } from '../actions/yearDataActions';
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  
-  // Получаем текущую дату
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+  // debugger;
+  const [month, setMonth] = useState(null);
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  let currentYear, currentMonth, currentDate;
+
+  function init(month) {
+    const currDate = new Date();
+    if(month === null) {
+      currentYear = currDate.getFullYear();
+      currentMonth = currDate.getMonth();
+    } else {
+      currentMonth = month >= 0 ? month : 12 + month;
+      currentYear = year;
+    }
+    currentDate = new Date(currentYear, currentMonth + 1, 0);
+  }
+
+  init(month);
 
   // Получаем количество дней в текущем месяце
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
   // Создаем массив с числами от 1 до количества дней в текущем месяце
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+   
+  let tasks, labels, filters, monthData;
+  monthData = useSelector(state => state.yearData[currentMonth]);
+
+  tasks = useSelector(state => state.tasks);
+  labels = useSelector(state => state.labels);
+  filters = useSelector(state => state.filters);
+
+  const handleChangeMonth = (event) => {
+
+    dispatch(putMonthData(currentMonth, { tasks, labels, filters }))
+
+    if(event.target.classList.contains('prev-month')) {
+      setMonth(currentMonth - 1);
+      if (currentMonth - 1 < 0) {
+        setYear(year - 1);
+      }
+    }
+
+    if(event.target.classList.contains('next-month')) {
+      setMonth(currentMonth + 1);
+      if (currentMonth + 1 > 11) {
+        setYear(year + 1);
+        setMonth(0);
+      }
+    }
+  };
 
   const [holidays, setHolidays] = useState([]);
 
@@ -98,17 +143,20 @@ const Calendar = () => {
     return filteredTasks;
   }
 
-  let tasks;
-  tasks = useSelector(state => state.tasks);
-  const labels = useSelector(state => state.labels);
-  const filters = useSelector(state => state.filters);
+  useEffect(() => {
+    // debugger;
+    dispatch(updateTasks(monthData?.tasks || {}));
+    dispatch(updateLabels(monthData?.labels || {}));
+    dispatch(updateFilters(monthData?.filters || {}));
+  }, [monthData]); 
+  
 
   useEffect(() => {
     try {
-      localStorage.setItem(
-        'stateFromStorage', 
-        JSON.stringify({ tasks, filters, labels })
-      );
+      // localStorage.setItem(
+      //   'stateFromStorage', 
+      //   JSON.stringify({ tasks, filters, labels })
+      // );
     } catch (error) {
       console.error('Error saving state to localStorage:', error);
     }
@@ -149,6 +197,11 @@ const Calendar = () => {
     dispatch(filterTasksByLabel(event.target.value));
   };
 
+  console.log(tasks);
+  console.log(labels);
+  console.log(filters);
+  // debugger;
+
   return (
     <div className="calendar">
       <h2>{currentDate.toLocaleString('default', { month: 'long' })} {currentYear}</h2>
@@ -167,6 +220,10 @@ const Calendar = () => {
             <option value="yellow">Желтый</option>
             {/* Добавьте другие цвета, если нужно */}
         </select>
+        <div className='month-taker' onClick={handleChangeMonth}>
+          <button className='prev-month'>prevMonth</button>
+          <button className='next-month'>nextMonth</button>
+        </div>
       </div>
       <div className="grid">
         {daysArray.map(day => (

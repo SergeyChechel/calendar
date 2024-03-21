@@ -1,5 +1,5 @@
 
-import { ADD_TASK, EDIT_TASK, MOVE_TASK, REORDER_TASK, DELETE_TASK } from '../actions/taskActions';
+import { UPDATE_TASKS, ADD_TASK, EDIT_TASK, MOVE_TASK, REORDER_TASK, DELETE_TASK } from '../actions/taskActions';
 import { IMPORT_CALENDAR, EXPORT_CALENDAR } from '../actions/calendarActions';
 import initialState from '../store/initialState';
 
@@ -13,6 +13,11 @@ const calendarReducer = (state = initialState, action) => {
   }
 
   switch (action.type) {
+
+    case UPDATE_TASKS:
+      // debugger;
+      return action.payload
+
     case ADD_TASK:
       const { day, name, descr, id } = action.payload;
       const task = {day, name, descr, id};

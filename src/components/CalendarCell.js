@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { moveTask, reorderTask } from '../actions/taskActions';
 import { moveLabels } from '../actions/labelActions';
 import Task from './Task';
+import { connect } from 'react-redux';
 
-const CalendarCell = ({ date, tasks, onEditTask, taskFormData }) => {
+const CalendarCell = ({ date, tasks, onEditTask, taskFormData, dataFromRedux }) => {
+
 
   const dispatch = useDispatch();
   const dayLabels = useSelector(state => state.labels[date]) || [];
-
+  const dayTasks = dataFromRedux[date];
+  // debugger;
   function filterLabelsByTaskId(dayLabels, taskId) {
     return dayLabels.filter(item => item.taskId === taskId);
   }
@@ -62,4 +65,11 @@ const CalendarCell = ({ date, tasks, onEditTask, taskFormData }) => {
   );
 }
 
-export default CalendarCell;
+const mapStateToProps = state => {
+  // debugger;
+  return {
+    dataFromRedux: state.tasks // Получение доступа к данным из Redux-состояния и отображение их в свойство 'данныеИзRedux'
+  };
+};
+
+export default connect(mapStateToProps)(CalendarCell);

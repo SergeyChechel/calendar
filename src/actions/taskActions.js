@@ -4,8 +4,16 @@ export const EDIT_TASK = 'EDIT_TASK';
 export const MOVE_TASK = 'MOVE_TASK';
 export const REORDER_TASK = 'REORDER_TASK';
 export const DELETE_TASK = 'DELETE_TASK'; 
+export const UPDATE_TASKS = 'UPDATE_TASKS'; 
 
-// action creators
+
+export const updateTasks = (tasks) => {
+  return {
+    type: UPDATE_TASKS,
+    payload: tasks
+  };
+};
+
 export const addTask = (day, taskName, taskDescr, idOftask) => {
   return {
     type: ADD_TASK,

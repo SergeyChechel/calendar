@@ -2,6 +2,10 @@ import initialState from '../store/initialState';
 
 const labelsReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case 'UPDATE_LABELS':
+      return action.payload;
+      
     case 'ADD_LABEL':
       const { task, label } = action.payload;
       return {

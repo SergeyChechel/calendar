@@ -189,3 +189,11 @@ form {
   background: yellow;
   color: red;
 }
+
+.month-taker {
+  float: right;
+}
+
+.next-month {
+  margin-left: 10px;
+}
