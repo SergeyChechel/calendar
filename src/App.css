@@ -71,12 +71,23 @@
 
 .day {
   position: relative;
+  min-height: 163px;
 }
 
 .day h4 {
   margin-top: 0;
   margin-bottom: 6px;
   min-height: 21px;
+  min-width: 21px;
+  display: inline-block;
+}
+
+.day-name {
+  font-size: 12px;
+}
+
+.today {
+  background: antiquewhite;
 }
 
 .add-task {
@@ -194,6 +205,6 @@ form {
   float: right;
 }
 
-.next-month {
-  margin-left: 10px;
+.month-taker button {
+  margin-left: 5px;
 }

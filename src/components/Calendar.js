@@ -64,7 +64,10 @@ const Calendar = () => {
       }
     }
 
-    
+    if(event.target.classList.contains('this-month')) {
+      // debugger;
+      setMonth(new Date().getMonth());
+    }
   };
 
   const [holidays, setHolidays] = useState([]);
@@ -200,6 +203,14 @@ const Calendar = () => {
     dispatch(filterTasksByLabel(event.target.value));
   };
 
+  const getDayOfWeek = (year, month, day) => {
+    const date = new Date(year, month, day);
+    const dayOfWeekNumber = date.getDay();
+    const daysOfWeek = ['Воскр', 'Понед', 'Вторн', 'Среда', 'Четверг', 'Пятн', 'Суббота', ];
+
+    return daysOfWeek[dayOfWeekNumber];
+};
+
   return (
     <div className="calendar">
       <h2>{currentDate.toLocaleString('default', { month: 'long' })} {currentYear}</h2>
@@ -220,12 +231,14 @@ const Calendar = () => {
         </select>
         <div className='month-taker' onClick={handleChangeMonth}>
           <button className='prev-month'>prevMonth</button>
+          <button className='this-month'>thisMonth</button>
           <button className='next-month'>nextMonth</button>
         </div>
       </div>
       <div className="grid">
         {daysArray.map(day => (
-          <div className="day" key={day + '_'} onClick={(e) => {
+          <div className={day == new Date().getDate() && currentMonth == new Date().getMonth() ? "day today" : "day"} 
+            key={day + '_'} onClick={(e) => {
               if(e.target.classList.contains('cncl-tsk-btn')) {
                 addDayTask(null)
               }
@@ -233,6 +246,7 @@ const Calendar = () => {
             title={holidaysNamesInThisMonth[holidaysDaysInThisMonth.indexOf(day)]}
           >
             <h4 className={holidaysDaysInThisMonth.includes(day) ? 'holiday' : ''} >{day}</h4>
+            <span className='day-name'>{getDayOfWeek(year, currentMonth, day)}</span>
             <button className="add-task" ref={myRef} onClick={() => addDayTask(day)}>
               Add task</button>
 
