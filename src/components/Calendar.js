@@ -36,12 +36,13 @@ const Calendar = () => {
   // Создаем массив с числами от 1 до количества дней в текущем месяце
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
    
-  let tasks, labels, filters, monthData;
+  let tasks, labels, filters, monthData, yearData;
   monthData = useSelector(state => state.yearData[currentMonth]);
 
   tasks = useSelector(state => state.tasks);
   labels = useSelector(state => state.labels);
   filters = useSelector(state => state.filters);
+  yearData = useSelector(state => state.yearData);
 
   const handleChangeMonth = (event) => {
 
@@ -153,10 +154,10 @@ const Calendar = () => {
 
   useEffect(() => {
     try {
-      // localStorage.setItem(
-      //   'stateFromStorage', 
-      //   JSON.stringify({ tasks, filters, labels })
-      // );
+      localStorage.setItem(
+        'stateFromStorage', 
+        JSON.stringify({ tasks, filters, labels, yearData })
+      );
     } catch (error) {
       console.error('Error saving state to localStorage:', error);
     }
@@ -196,11 +197,6 @@ const Calendar = () => {
     setLabelsColor(event.target.value);
     dispatch(filterTasksByLabel(event.target.value));
   };
-
-  console.log(tasks);
-  console.log(labels);
-  console.log(filters);
-  // debugger;
 
   return (
     <div className="calendar">
