@@ -7,8 +7,20 @@ const yaearDataReducer = (state = initialState, action) => {
   switch (action.type) {
     
     case PUT_MONTH_DATA: 
-      const { month, monthData } = action.payload;
-      return [...state.slice(0, month), monthData, ...state.slice(month + 1)];
+      const { currentYear, month, monthData } = action.payload;
+      let currentYearData;
+
+      if(!state[currentYear]) {
+        currentYearData = Array.from({ length: 12 }).map(() => ({}));
+        currentYearData[month] = monthData;
+      } else {
+        currentYearData = [...state[currentYear].slice(0, month), monthData, ...state[currentYear].slice(month + 1)]
+      }
+
+      return {
+        ...state,
+        [currentYear]: currentYearData
+      };
 
     case EXTRACT_MONTH_DATA:
       return state[action.payload];

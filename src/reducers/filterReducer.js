@@ -6,7 +6,7 @@ const filterReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-    case FILTER_TASKS_BY_TEXT:
+    case UPDATE_FILTERS:
       return action.payload; 
 
     case FILTER_TASKS_BY_TEXT:

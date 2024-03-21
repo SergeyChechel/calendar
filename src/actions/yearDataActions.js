@@ -2,9 +2,9 @@
 export const PUT_MONTH_DATA = 'PUT_MONTH_DATA';
 export const EXTRACT_MONTH_DATA = 'EXTRACT_MONTH_DATA';
 
-export const putMonthData = (month, monthData) => ({
+export const putMonthData = (currentYear, month, monthData) => ({
   type: PUT_MONTH_DATA,
-  payload: { month, monthData }
+  payload: { currentYear, month, monthData }
 });
 
 export const extractMonthData = (month) => ({

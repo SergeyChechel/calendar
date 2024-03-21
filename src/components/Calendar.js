@@ -11,18 +11,16 @@ import { putMonthData } from '../actions/yearDataActions';
 const Calendar = () => {
   const dispatch = useDispatch();
   const [month, setMonth] = useState(null);
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-  let currentYear, currentMonth, currentDate;
+  let currentMonth, currentDate;
 
   function init(month) {
     const currDate = new Date();
     if(month === null) {
-      currentYear = currDate.getFullYear();
       currentMonth = currDate.getMonth();
     } else {
       currentMonth = month >= 0 ? month : 12 + month;
-      currentYear = year;
     }
     currentDate = new Date(currentYear, currentMonth + 1, 0);
   }
@@ -36,7 +34,11 @@ const Calendar = () => {
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
    
   let tasks, labels, filters, monthData, yearData;
-  monthData = useSelector(state => state.yearData[currentMonth]);
+
+  monthData = useSelector(state => {
+    return state.yearData[currentYear] ? 
+      state.yearData[currentYear][currentMonth] : {};
+  });
 
   tasks = useSelector(state => state.tasks);
   labels = useSelector(state => state.labels);
@@ -44,29 +46,26 @@ const Calendar = () => {
   yearData = useSelector(state => state.yearData);
 
   const handleChangeMonth = (event) => {
-
-    dispatch(putMonthData(currentMonth, { tasks, labels, filters }))
+    dispatch(putMonthData(currentYear, currentMonth, { tasks, labels, filters }))
 
     if(event.target.classList.contains('prev-month')) {
       setMonth(currentMonth - 1);
       if (currentMonth - 1 < 0) {
-        // setYear(year - 1); // откл перехода на другие года
-        setMonth(0);
+        setCurrentYear(currentYear - 1);
       }
     }
 
     if(event.target.classList.contains('next-month')) {
       setMonth(currentMonth + 1);
       if (currentMonth + 1 > 11) {
-        // setYear(year + 1); // откл перехода на другие года
-        // setMonth(0);       // откл перехода на другие года
-        setMonth(11);
+        setCurrentYear(currentYear + 1);
+        setMonth(0);
       }
     }
 
     if(event.target.classList.contains('this-month')) {
-      // debugger;
       setMonth(new Date().getMonth());
+      setCurrentYear(new Date().getFullYear())
     }
   };
 
@@ -75,7 +74,7 @@ const Calendar = () => {
   useEffect(() => {
     const fetchHolidays = async () => {
       try {
-        const response = await fetch('https://date.nager.at/api/v3/PublicHolidays/2024/UA');
+        const response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${currentYear}/UA`);
         if (!response.ok) {
           throw new Error('Ошибка при получении данных о праздниках');
         }
@@ -150,12 +149,14 @@ const Calendar = () => {
     return filteredTasks;
   }
 
+ 
   useEffect(() => {
-    dispatch(updateTasks(monthData?.tasks || {}));
-    dispatch(updateLabels(monthData?.labels || {}));
-    dispatch(updateFilters(monthData?.filters || {}));
-  }, [monthData]); 
-  
+    if (monthData) {
+      dispatch(updateTasks(monthData.tasks || {}));
+      dispatch(updateLabels(monthData.labels || {}));
+      dispatch(updateFilters(monthData.filters || {}));
+    }
+  }, [month]); 
 
   useEffect(() => {
     try {
@@ -166,7 +167,7 @@ const Calendar = () => {
     } catch (error) {
       console.error('Error saving state to localStorage:', error);
     }
-  }, [tasks, filters, labels]);
+  }, [tasks, filters, labels, yearData]);
 
   if(filters.searchText) {
     tasks = filterTasks(tasks, filters.searchText, 'text');
@@ -231,7 +232,7 @@ const Calendar = () => {
         </select>
         <div className='month-taker' onClick={handleChangeMonth}>
           <button className='prev-month'>prevMonth</button>
-          <button className='this-month'>thisMonth</button>
+          <button className='this-month'>currMonth</button>
           <button className='next-month'>nextMonth</button>
         </div>
       </div>
@@ -246,7 +247,7 @@ const Calendar = () => {
             title={holidaysNamesInThisMonth[holidaysDaysInThisMonth.indexOf(day)]}
           >
             <h4 className={holidaysDaysInThisMonth.includes(day) ? 'holiday' : ''} >{day}</h4>
-            <span className='day-name'>{getDayOfWeek(year, currentMonth, day)}</span>
+            <span className='day-name'>{getDayOfWeek(currentYear, currentMonth, day)}</span>
             <button className="add-task" ref={myRef} onClick={() => addDayTask(day)}>
               Add task</button>
 
