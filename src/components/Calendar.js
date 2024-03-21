@@ -209,7 +209,7 @@ const Calendar = () => {
     const dayOfWeekNumber = date.getDay();
     const daysOfWeek = ['Воскр', 'Понед', 'Вторн', 'Среда', 'Четверг', 'Пятн', 'Суббота', ];
 
-    return daysOfWeek[dayOfWeekNumber];
+    return [dayOfWeekNumber, daysOfWeek[dayOfWeekNumber]];
 };
 
   return (
@@ -247,7 +247,7 @@ const Calendar = () => {
             title={holidaysNamesInThisMonth[holidaysDaysInThisMonth.indexOf(day)]}
           >
             <h4 className={holidaysDaysInThisMonth.includes(day) ? 'holiday' : ''} >{day}</h4>
-            <span className='day-name'>{getDayOfWeek(currentYear, currentMonth, day)}</span>
+            <span className={[0, 6].includes((getDayOfWeek(currentYear, currentMonth, day)[0])) ? 'day-name weekend' : 'day-name' }>{getDayOfWeek(currentYear, currentMonth, day)[1]}</span>
             <button className="add-task" ref={myRef} onClick={() => addDayTask(day)}>
               Add task</button>
 
